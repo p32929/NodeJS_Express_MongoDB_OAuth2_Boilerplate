@@ -121,4 +121,17 @@ exports.scopeCheck = function (scopes) {
     }
 };
 
+exports.isAdmin = () => {
+    return (req, res, next) => {
+        console.log("isAdmin: " + req.user)
+        if (req.user.status === 'admin') {
+            next();
+        } else {
+            res.status(401).send({
+                message: "YOU ARE NOT ADMIN"
+            })
+        }
+    }
+}
+
 exports.isAuthenticated = passport.authenticate('jwt', {session: false, scope: ['email']});
