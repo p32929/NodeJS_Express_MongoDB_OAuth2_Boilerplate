@@ -74,3 +74,6 @@ typings/
 
 # IDEA
 .idea/
+
+# for Heroku
+package-lock.json
