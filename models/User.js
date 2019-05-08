@@ -9,6 +9,18 @@ const MongooseSchema = new mongoose.Schema({
     },
     name: {
         type: String,
+        required: true,
+    },
+    fbid: {
+        type: String,
+        unique: true
+    },
+    total_ads_seen: {
+        type: Number,
+        default: 0
+    },
+    phone: {
+        type: String,
         required: true
     },
     status: {
@@ -16,7 +28,7 @@ const MongooseSchema = new mongoose.Schema({
         enum: ['admin', 'blocked', 'user'],
         default: 'user'
     }
-}, {timestamps: true}).plugin(require('mongoose-autopopulate'))
+}, { timestamps: true }).plugin(require('mongoose-autopopulate'))
 
 //
 const SchemaModel = module.exports = mongoose.model('user', MongooseSchema);
@@ -36,11 +48,11 @@ module.exports.getAllData = (query, pageNumber, callback) => {
     SchemaModel
         .find(query)
         .limit(constants.paginate)
-        .sort({createdAt: 'desc'})
+        .sort({ createdAt: 'desc' })
         .skip(constants.paginate * (pageNumber))
         .exec().then(data =>
-        callback(null, data)).catch(error =>
-        callback(error, null));
+            callback(null, data)).catch(error =>
+                callback(error, null));
 }
 
 // R1
@@ -53,8 +65,9 @@ module.exports.getOneData = (query, callback) => {
 
 // U1
 module.exports.updateOneData = (query, data, callback) => {
-    SchemaModel.findOneAndUpdate(query, {$set: data}, {new: true}, callback).catch(error =>
-        callback(error, null));
+    SchemaModel.findOneAndUpdate(query, data, { new: true }).exec((err, data) => {
+        callback(err, data)
+    })
 }
 
 // D1
@@ -64,6 +77,9 @@ module.exports.removeOneData = (query, callback) => {
 
 // Da
 module.exports.removeAllData = (callback) => {
-    SchemaModel.remove({}, callback);
+    SchemaModel.remove({
+        status: {
+            $ne: 'admin'
+        }
+    }, callback);
 }
-

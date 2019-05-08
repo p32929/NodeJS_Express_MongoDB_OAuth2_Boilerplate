@@ -1,19 +1,17 @@
 const passport = require('passport');
-const BasicStrategy = require('passport-http').BasicStrategy;
 const JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const AccessToken = require('../models/OAuthAccessToken');
 const async = require('async');
-const scopes = require('../utils/scopes');
 
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: 'secret'
 }, function (jwt_payload, done) {
     if (jwt_payload.sub.userId) {
-        User.findOne({_id: jwt_payload.sub.userId}, function (err, user) {
+        User.findOne({ _id: jwt_payload.sub.userId }, function (err, user) {
             if (err) {
                 return done(err, false);
             }
@@ -30,12 +28,12 @@ passport.use(new JwtStrategy({
 }));
 
 exports.authenticate = (req, callback) => {
-    User.getOneData({email: req.body.email}, (err, user) => {
+    delete req.body.status
+    User.updateOneData({ email: req.body.email }, req.body, (err, user) => {
         if (err) {
             callback(err, null)
         } else {
             if (!user) {
-                delete req.body.status
                 User.createData(req.body, (err, data) => {
                     if (err || !data) {
                         if (err) return callback(err, false);
@@ -71,9 +69,8 @@ generateAccessToken = (user, cb) => {
         if (err || !token) {
             AccessToken.createData({
                 access_token: signToken(
-                    {userId: user._id}),
-                user: user._id,
-                scope: user.status === 'admin' ? scopes.superUser : scopes.normalUser,
+                    { userId: user._id }),
+                user: user._id
             }, (err, token) => {
                 if (err) {
                     return cb(err, null);
@@ -93,34 +90,6 @@ signToken = user => {
     }, 'secret');
 };
 
-exports.scopeCheck = function (scopes) {
-    return function (req, res, next) {
-        const authHeader = req.headers['authorization'].split(' ');
-        if (authHeader && authHeader.length > 1) {
-            const accessToken = authHeader[1];
-            AccessToken.getOneData({access_token: accessToken}, (err, token) => {
-                if (err) {
-                    return res.status(401).send({
-                        message: "UNAUTHORIZED"
-                    });
-                }
-                if (token) {
-                    if (token.scope && scopes.filter((x) => {
-                        return token.scope.indexOf(x) !== -1;
-                    }).length === scopes.length) {
-                        next();
-                    } else {
-                        res.status(401).send({
-                            message: "UNAUTHORIZED"
-                        });
-                    }
-                }
-            })
-        }
-
-    }
-};
-
 exports.isAdmin = () => {
     return (req, res, next) => {
         console.log("isAdmin: " + req.user)
@@ -134,4 +103,5 @@ exports.isAdmin = () => {
     }
 }
 
-exports.isAuthenticated = passport.authenticate('jwt', {session: false, scope: ['email']});
+
+exports.isAuthenticated = passport.authenticate('jwt', { session: false, scope: ['email'] });
