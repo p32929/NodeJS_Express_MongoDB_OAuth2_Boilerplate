@@ -18,9 +18,9 @@ var now = function () {
 }
 
 var newDb = function () {
-    mongoose.connect(constants.mongoUrl, function () {
-        mongoose.connection.db.dropDatabase();
-    });
+    // mongoose.connect(constants.mongoUrl, function () {
+    //     mongoose.connection.db.dropDatabase();
+    // });
 }
 
 module.exports = {
