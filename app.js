@@ -38,7 +38,7 @@ app.set('view engine', 'pug');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -63,26 +63,27 @@ app.use(function (err, req, res) {
     res.render('error');
 });
 
-var newdb = false;
+var newdb = true;
 if (newdb) {
-    db.dropDatabase((err) => {
-        console.log('NewDb Error: ' + JSON.stringify(err))
-    });
+    db.dropDatabase();
 }
 
-var seeding = false;
+var seeding = true;
 if (seeding) {
     User.createData({
-        email: "p32929@github.com",
-        name: "Fayaz Bin Salam",
-        location: "Anonymous",
-        picture: "https://mir-s3-cdn-cf.behance.net/project_modules/disp/efe2c48148029.560b806a17ef7.png",
-        phone: "0101010101",
-        earning: "99999999",
-        free: false,
-        status: "admin"
+        "email": "smtanjil96@yahoo.com",
+        "name": "Tanjil",
+        "status": "admin"
     }, (err, data) => {
-        console.log(err || data)
+        console.log(err|| data)
+    })
+
+    User.createData({
+        "email": "tareklegendkiller@yahoo.com",
+        "name": "Tarek",
+        "status": "admin"
+    }, (err, data) => {
+        console.log(err|| data)
     })
 }
 

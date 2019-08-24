@@ -11,18 +11,6 @@ const MongooseSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    fbid: {
-        type: String,
-        unique: true
-    },
-    total_ads_seen: {
-        type: Number,
-        default: 0
-    },
-    phone: {
-        type: String,
-        required: true
-    },
     status: {
         type: String,
         enum: ['admin', 'blocked', 'user'],
