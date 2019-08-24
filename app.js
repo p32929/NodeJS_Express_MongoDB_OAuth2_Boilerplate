@@ -63,27 +63,19 @@ app.use(function (err, req, res) {
     res.render('error');
 });
 
-var newdb = true;
+var newdb = false;
 if (newdb) {
     db.dropDatabase();
 }
 
-var seeding = true;
+var seeding = false;
 if (seeding) {
     User.createData({
-        "email": "smtanjil96@yahoo.com",
-        "name": "Tanjil",
+        "email": "p32929@yahoo.com",
+        "name": "Fayaz Bin Salam",
         "status": "admin"
     }, (err, data) => {
-        console.log(err|| data)
-    })
-
-    User.createData({
-        "email": "tareklegendkiller@yahoo.com",
-        "name": "Tarek",
-        "status": "admin"
-    }, (err, data) => {
-        console.log(err|| data)
+        console.log(err || data)
     })
 }
 
