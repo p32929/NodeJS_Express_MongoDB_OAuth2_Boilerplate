@@ -1,6 +1,7 @@
 {
-  "name": "buy_sell_bd",
+  "name": "p32929_noddejs_boilerplate",
   "version": "1.0.0",
+  "homepage": "https://github.com/p32929/NodeJS_Express_MongoDB_OAuth2_Boilerplate",
   "description": "",
   "engines": {
     "node": "8.12.0",
