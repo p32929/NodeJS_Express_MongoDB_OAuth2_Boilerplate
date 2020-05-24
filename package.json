@@ -4,8 +4,8 @@
   "homepage": "https://github.com/p32929/NodeJS_Express_MongoDB_OAuth2_Boilerplate",
   "description": "",
   "engines": {
-    "node": "8.12.0",
-    "npm": "6.4.1"
+    "node": "14.3.0",
+    "npm": "6.14.5"
   },
   "main": "index.js",
   "scripts": {
