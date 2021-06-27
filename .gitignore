@@ -77,3 +77,4 @@ typings/
 
 # for Heroku
 package-lock.json
+yarn.lock

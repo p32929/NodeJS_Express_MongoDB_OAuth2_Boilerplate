@@ -7,10 +7,6 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const async = require('async');
-const Agenda = require('agenda');
-const fs = require('fs');
-const rimraf = require('rimraf');
 var User = require('./models/User');
 
 //
